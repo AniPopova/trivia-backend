@@ -1,25 +1,33 @@
 const express = require('express');
+const { sequelize } = require('./config/sequelize'); 
 const app = express();
-
-// Include your models
+const PORT = process.env.PORT || 3000;
 const models = require('./models');
 
-// Include your routes
-const questionsRouter = require('./routes/questions');
-const categoriesRouter = require('./routes/categories');
-const difficultiesRouter = require('./routes/difficulties');
-
-// Middleware to log requests
 app.use((req, res, next) => {
   console.log('Request:', req.method, req.originalUrl);
   next();
 });
 
-// Use your routes
+app.use(express.json());
+
+const questionsRouter = require('./routes/questionsRouter');
+const categoriesRouter = require('./routes/categoriesRouter');
+const difficultiesRouter = require('./routes/difficultiesRouter');
+
 app.use('/questions', questionsRouter);
 app.use('/categories', categoriesRouter);
 app.use('/difficulties', difficultiesRouter);
 
-app.listen(3000, () => {
-  console.log('Server is running on port 3000');
-});
+// Sync the database before starting the server
+sequelize.sync()
+  .then(() => {
+    console.log('Database synced successfully.');
+    // Start the Express server
+    app.listen(PORT, () => {
+      console.log(`Server is running on http://localhost:${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error('Error syncing database:', error);
+  });
