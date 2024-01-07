@@ -19,11 +19,9 @@ app.use('/questions', questionsRouter);
 app.use('/categories', categoriesRouter);
 app.use('/difficulties', difficultiesRouter);
 
-// Sync the database before starting the server
 sequelize.sync()
   .then(() => {
     console.log('Database synced successfully.');
-    // Start the Express server
     app.listen(PORT, () => {
       console.log(`Server is running on http://localhost:${PORT}`);
     });

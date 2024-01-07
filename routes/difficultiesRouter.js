@@ -1,5 +1,6 @@
 const express = require('express');
-const difficultyService = require('../services/difficultiesService');
+const { Difficulty } = require('../models');
+const difficultyService = require('../services/difficultyService');
 
 const difficultyRouter = express.Router();
 
