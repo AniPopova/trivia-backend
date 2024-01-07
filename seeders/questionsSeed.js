@@ -1,14 +1,18 @@
 'use strict';
 
+const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
 const path = require('path');
-require('../config/sequelize');
-const questionsData = require('./triviaData.json');
+const { Category, Difficulty, Question } = require('../models'); // Adjust the path accordingly
+
+// Load your JSON data
+const rawData = fs.readFileSync(path.join(__dirname, 'triviaData.json'));
+const questionsData = JSON.parse(rawData);
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     async function getCategoryIdByName(name) {
-      const category = await queryInterface.sequelize.models.Category.findOne({
+      const category = await Category.findOne({
         where: { name },
         attributes: ['id'],
       });
@@ -16,7 +20,7 @@ module.exports = {
     }
 
     async function getDifficultyIdByName(name) {
-      const difficulty = await queryInterface.sequelize.models.Difficulty.findOne({
+      const difficulty = await Difficulty.findOne({
         where: { name },
         attributes: ['id'],
       });
@@ -30,9 +34,13 @@ module.exports = {
         const difficultyId = await getDifficultyIdByName(question.difficulty);
     
         return {
-          ...question,
-          categoryId,
+          id: uuidv4(),
+          type: question.type,
           difficultyId,
+          categoryId,
+          question: question.question,
+          correct_answer: question.correct_answer,
+          incorrect_answers: JSON.stringify(question.incorrect_answers), 
           createdAt: new Date(),
           updatedAt: new Date(),
         };
@@ -46,8 +54,3 @@ module.exports = {
     await queryInterface.bulkDelete('Questions', null, {});
   },
 };
-
-
-
-
-

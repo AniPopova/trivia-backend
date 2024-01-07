@@ -1,4 +1,3 @@
-// migrations/xxxxxxxxxxxxxx-create-question.js
 'use strict';
 const { v4: uuidv4 } = require('uuid');
 
@@ -22,8 +21,8 @@ module.exports = {
           model: 'Difficulties',
           key: 'id',
         },
-      },
-      categoryId: { // Change field name to categoryId
+      },   
+      categoryId: {
         type: Sequelize.UUID, 
         allowNull: false,
         references: {
@@ -57,4 +56,3 @@ module.exports = {
     await queryInterface.dropTable('Questions');
   },
 };
-
