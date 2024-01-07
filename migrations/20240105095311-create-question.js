@@ -1,34 +1,60 @@
+// migrations/xxxxxxxxxxxxxx-create-question.js
 'use strict';
-/** @type {import('sequelize-cli').Migration} */
+const { v4: uuidv4 } = require('uuid');
+
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Questions', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID,
+        defaultValue: () => uuidv4(),
       },
-      content: {
-        type: Sequelize.STRING
-      },
-      categoryId: {
-        type: Sequelize.UUID
+      type: {
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       difficultyId: {
-        type: Sequelize.UUID
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: {
+          model: 'Difficulties',
+          key: 'id',
+        },
+      },
+      categoryId: { // Change field name to categoryId
+        type: Sequelize.UUID, 
+        allowNull: false,
+        references: {
+          model: 'Categories',
+          key: 'id',
+        },
+      },
+      question: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      correct_answer: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      incorrect_answers: {
+        type: Sequelize.JSONB,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
-  async down(queryInterface, Sequelize) {
+  down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Questions');
-  }
+  },
 };
+

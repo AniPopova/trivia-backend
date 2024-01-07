@@ -3,11 +3,11 @@
   "colors": true,
   "ignore": [
     ".git",
-    "node_modules/**/node_modules"
+    "node_modules/**"
   ],
   "verbose": false,
   "execMap": {
-    "js": "node --harmony"
+    "js": "node"
   },
   "watch": [
     "src/express/*.js"

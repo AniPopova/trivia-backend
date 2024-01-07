@@ -1,25 +1,33 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
+const { Model, DataTypes } = require('sequelize');
+const { v4: uuidv4 } = require('uuid');
+
+module.exports = (sequelize) => {
   class Question extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
+      Question.belongsTo(models.Difficulty, { foreignKey: 'difficultyId', as: 'difficulty' });
+      Question.belongsTo(models.Category, { foreignKey: 'categoryId', as: 'category' });
     }
   }
-  Question.init({
-    content: DataTypes.STRING,
-    categoryId: DataTypes.UUID,
-    difficultyId: DataTypes.UUID
-  }, {
-    sequelize,
-    modelName: 'Question',
-  });
+  Question.init(
+    {
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: () => uuidv4(),
+        primaryKey: true,
+        allowNull: false,
+      },
+      type: DataTypes.STRING,
+      difficultyId: DataTypes.UUID, // Assuming you have a foreign key to Difficulty
+      categoryId: DataTypes.UUID,
+      question: DataTypes.STRING,
+      correct_answer: DataTypes.STRING,
+      incorrect_answers: DataTypes.JSONB, // Assuming you're using PostgreSQL for array storage
+    },
+    {
+      sequelize,
+      modelName: 'Question',
+    }
+  );
   return Question;
 };
