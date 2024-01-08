@@ -39,10 +39,11 @@ module.exports = {
           difficultyId,
           categoryId,
           question: question.question,
-          correctAnswer: question.correct_answer,
+          correctAnswer: question.correctAnswer,
           incorrectAnswers: JSON.stringify(question.incorrectAnswers), 
           createdAt: new Date(),
           updatedAt: new Date(),
+          deletedAt: null,
         };
       })
     );

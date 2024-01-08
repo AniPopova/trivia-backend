@@ -1,9 +1,9 @@
 const express = require('express');
-const difficultyService = require('../services/difficultyService');
+const difficultyService = require('../services/difficulties.service');
 
 const difficultyRouter = express.Router();
 
-difficultyRouter.get('/difficulties', async (req, res) => {
+difficultyRouter.get('/', async (req, res) => {
   try {
     const allDifficulties = await difficultyService.getAllDifficulties();
     res.json(allDifficulties);

@@ -1,37 +1,23 @@
 'use strict';
 const express = require('express');
-const expressListEndpoints = require('express-list-endpoints'); 
 const { sequelize } = require('./config/sequelize');
 const app = express();
 const PORT = process.env.PORT || 3000;
-//const routes = require('./routes'); 
+const routes = require('./routes'); 
 
-app.use((req, res, next) => {
+//fixing the anonymous type of the middleware
+app.use(function logRequest(req, res, next) {
   console.log('Request:', req.method, req.originalUrl);
   next();
 });
 
+// Middleware: Parse incoming requests with JSON payloads
 app.use(express.json());
 
-const questionsRouter = require('./routes/questionsRouter');
-const categoriesRouter = require('./routes/categoriesRouter');
-const difficultiesRouter = require('./routes/difficultiesRouter');
+// Use the defined routes for the application
+app.use(routes);
 
-app.use('/questions', questionsRouter);
-app.use('/categories', categoriesRouter);
-app.use('/difficulties', difficultiesRouter);
-
-//app.use(routes);
-
-app.get('/api/endpoints', (req, res) => {
-  const endpoints = [
-    ...expressListEndpoints(questionsRouter),
-    ...expressListEndpoints(categoriesRouter),
-    ...expressListEndpoints(difficultiesRouter),
-  ];
-  res.json(endpoints);
-});
-
+// Sync the Sequelize models with the database
 sequelize.sync()
   .then(() => {
     // Start the server only if syncing with the database.

@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const questionsRouter = require('./questionsRouter');
-const categoriesRouter = require('./categoriesRouter');
-const difficultiesRouter = require('./difficultiesRouter');
+const questionsRouter = require('./questions.router');
+const categoriesRouter = require('./categories.router');
+const difficultiesRouter = require('./difficulties.router');
 
 router.use('/questions', questionsRouter);
 router.use('/categories', categoriesRouter);

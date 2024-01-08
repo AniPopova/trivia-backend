@@ -1,6 +1,5 @@
 'use strict';
-const { v4: uuidv4 } = require('uuid');
-const { DataTypes, Sequelize } = require('sequelize');
+const { DataTypes } = require('sequelize');
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -8,15 +7,15 @@ module.exports = {
       id: {
         allowNull: false,
         primaryKey: true,
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.DataTypes.UUIDV4,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
       },
       type: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING, 
         allowNull: false,
       },
       difficultyId: {
-        type: Sequelize.UUID,
+        type: DataTypes.UUID, 
         allowNull: false,
         references: {
           model: 'Difficulties',
@@ -24,7 +23,7 @@ module.exports = {
         },
       },   
       categoryId: {
-        type: Sequelize.UUID, 
+        type: DataTypes.UUID, 
         allowNull: false,
         references: {
           model: 'Categories',
@@ -32,24 +31,30 @@ module.exports = {
         },
       },
       question: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING, 
         allowNull: false,
       },
-      correct_answer: {
-        type: Sequelize.STRING,
+      correctAnswer: {
+        type: DataTypes.STRING, 
         allowNull: false,
       },
-      incorrect_answers: {
-        type: Sequelize.JSONB,
+      incorrectAnswers: {
+        type: DataTypes.JSONB, 
         allowNull: false,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: DataTypes.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: DataTypes.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+      },
+      deletedAt: {
+        allowNull: true,
+        type: DataTypes.DATE,
       },
     });
   },

@@ -10,12 +10,12 @@ module.exports = {
     const data = fs.readFileSync(path.join(__dirname, 'difficultiesData.json'), 'utf-8');
     const difficultiesData = JSON.parse(data);
 
-    // Extract difficulties from the data and generate UUIDs for each difficulty
     const difficultiesWithUuid = difficultiesData.difficulties.map(difficulty => ({
       id: uuidv4(),
       name: difficulty,
       createdAt: new Date(),
       updatedAt: new Date(),
+      deletedAt: null,
     }));
 
     await queryInterface.bulkInsert('Difficulties', difficultiesWithUuid, {});

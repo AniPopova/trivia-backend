@@ -1,9 +1,9 @@
 const express = require("express");
-const categoryService = require("../services/categoriesService");
+const categoryService = require("../services/categories.service");
 
 const categoryRouter = express.Router();
 
-categoryRouter.get("/categories", async (req, res) => {
+categoryRouter.get("/", async (req, res) => {
   try {
     const allCategories = await categoryService.getAllCategories();
     res.json(allCategories);

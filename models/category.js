@@ -5,32 +5,35 @@ const { v4: uuidv4 } = require('uuid');
 module.exports = (sequelize) => {
   class Category extends Model {
     static associate(models) {
-        Category.hasMany(models.Question, {
-          foreignKey: 'categoryId', 
-          as: 'questions', 
-        });
-      }
+      Category.hasMany(models.Question, {
+        foreignKey: 'categoryId', 
+        as: 'questions', 
+      });
+    }
   }
+
   Category.init(
     {
       id: {
-        type: DataTypes.UUID,
-        defaultValue: Sequelize.DataTypes.UUIDV4,
+        type: DataTypes.UUIDV4,
+        defaultValue: Sequelize.literal('gen_random_uuid()'),
         primaryKey: true,
         allowNull: false,
       },
       name: {
         type: DataTypes.STRING,
         unique: true,
+        allowNull: false,
         validate: {
-          allowNull: false,
-        }
-      }
+          notEmpty: true, 
+        },
+      },
     },
     {
       sequelize,
       modelName: 'Category',
     }
   );
+
   return Category;
 };

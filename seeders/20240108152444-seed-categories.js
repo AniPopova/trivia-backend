@@ -15,6 +15,7 @@ module.exports = {
       name: category,
       createdAt: new Date(),
       updatedAt: new Date(),
+      deletedAt: null,
     }));
 
     // insert categories into the table
