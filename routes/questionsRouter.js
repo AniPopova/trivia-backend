@@ -1,9 +1,11 @@
 const express = require('express');
 const { Question } = require('../models');
 const questionRouter = express.Router();
-const quizService = require('../services/quizService'); 
+const quizService = require('../services/quizService');
+const QuestionService = require('../services/questionsService'); 
+const questionService = QuestionService; 
 
-questionRouter.get('/api/questions/quiz', async (req, res) => {
+questionRouter.get('/quiz', async (req, res) => {
   try {
     const result = await quizService.generateQuiz(req.query);
     res.json(result);
@@ -13,9 +15,9 @@ questionRouter.get('/api/questions/quiz', async (req, res) => {
   }
 });
 
-questionRouter.get('/api/questions/all-questions', async (req, res) =>{
+questionRouter.get('/all-questions', async (req, res) => {
   try {
-    const allQuestions = await Question.findAll();
+    const allQuestions = await questionService.getAllQuestions(); 
     res.json(allQuestions);
   } catch (error) {
     console.error(error);
@@ -23,11 +25,9 @@ questionRouter.get('/api/questions/all-questions', async (req, res) =>{
   }
 });
 
-questionRouter.get('/api/questions/all-questions-with-details', async (req, res) => {
+questionRouter.get('/all-questions-with-details', async (req, res) => {
   try {
-    const allQuestions = await Question.findAll({
-      include: ['category', 'difficulty'],
-    });
+    const allQuestions = await questionService.getAllQuestionsWithDetails(); 
     res.json(allQuestions);
   } catch (error) {
     console.error(error);
@@ -35,13 +35,11 @@ questionRouter.get('/api/questions/all-questions-with-details', async (req, res)
   }
 });
 
-questionRouter.get('/api/questions/filter', async (req, res) => {
-  const { difficulty } = req.query;
 
+questionRouter.get('/filter', async (req, res) => {
+  const difficulty = req.query.difficulty;
   try {
-    const filteredQuestions = await Question.findAll({
-      where: { difficulty },
-    });
+    const filteredQuestions = await questionService.getFilteredQuestionsByDifficulty(difficulty);
     res.json(filteredQuestions);
   } catch (error) {
     console.error(error);
@@ -49,11 +47,10 @@ questionRouter.get('/api/questions/filter', async (req, res) => {
   }
 });
 
-questionRouter.get('/api/questions/sort-by-difficulty', async (req, res) => {
+questionRouter.get('/sort-by-difficulty', async (req, res) => {
   try {
-    const sortedQuestions = await Question.findAll({
-      order: [['difficultyId', 'ASC']],
-    });
+    const difficultyName = req.query.difficultyName;
+    const sortedQuestions = await questionService.getQuestionsSortedByDifficulty(difficultyName);
     res.json(sortedQuestions);
   } catch (error) {
     console.error(error);
@@ -61,16 +58,22 @@ questionRouter.get('/api/questions/sort-by-difficulty', async (req, res) => {
   }
 });
 
-questionRouter.get('/api/questions/sort-by-category', async (req, res) => {
+questionRouter.get('/sort-by-category', async (req, res) => {
   try {
-    const sortedQuestions = await Question.findAll({
-      order: [['categoryId', 'ASC']],
-    });
+    const categoryName = req.query.categoryName;
+    const sortedQuestions = await questionService.getQuestionsSortedByCategory(categoryName);
     res.json(sortedQuestions);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
+});
+
+
+questionRouter.use((req, res, next) => {
+  console.log('Executing questionsRouter middleware');
+  next();
 });
 
 module.exports = questionRouter;
+

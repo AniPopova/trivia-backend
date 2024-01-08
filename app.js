@@ -1,8 +1,9 @@
 const express = require('express');
-const { sequelize } = require('./config/sequelize'); 
+const expressListEndpoints = require('express-list-endpoints'); 
+const { sequelize } = require('./config/sequelize');
 const app = express();
 const PORT = process.env.PORT || 3000;
-const models = require('./models');
+const routes = require('./routes'); 
 
 app.use((req, res, next) => {
   console.log('Request:', req.method, req.originalUrl);
@@ -19,6 +20,15 @@ app.use('/questions', questionsRouter);
 app.use('/categories', categoriesRouter);
 app.use('/difficulties', difficultiesRouter);
 
+app.get('/api/endpoints', (req, res) => {
+  const endpoints = [
+    ...expressListEndpoints(questionsRouter),
+    ...expressListEndpoints(categoriesRouter),
+    ...expressListEndpoints(difficultiesRouter),
+  ];
+  res.json(endpoints);
+});
+
 sequelize.sync()
   .then(() => {
     console.log('Database synced successfully.');
@@ -29,3 +39,4 @@ sequelize.sync()
   .catch((error) => {
     console.error('Error syncing database:', error);
   });
+
