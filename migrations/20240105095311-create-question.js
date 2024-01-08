@@ -1,5 +1,6 @@
 'use strict';
 const { v4: uuidv4 } = require('uuid');
+const { DataTypes, Sequelize } = require('sequelize');
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -8,7 +9,7 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
-        defaultValue: () => uuidv4(),
+        defaultValue: Sequelize.DataTypes.UUIDV4,
       },
       type: {
         type: Sequelize.STRING,

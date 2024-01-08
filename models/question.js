@@ -1,5 +1,5 @@
-// models/question.js
-const { Model, DataTypes } = require('sequelize');
+'use strict';
+const { Model, DataTypes, Sequelize } = require('sequelize');
 const { v4: uuidv4 } = require('uuid');
 
 module.exports = (sequelize) => {
@@ -14,7 +14,7 @@ module.exports = (sequelize) => {
     {
       id: {
         type: DataTypes.UUID,
-        defaultValue: () => uuidv4(),
+        defaultValue: Sequelize.DataTypes.UUIDV4,
         primaryKey: true,
         allowNull: false,
       },
@@ -22,8 +22,8 @@ module.exports = (sequelize) => {
       difficultyId: DataTypes.UUID,
       categoryId: DataTypes.UUID,
       question: DataTypes.STRING,
-      correct_answer: DataTypes.STRING,
-      incorrect_answers: DataTypes.JSONB,
+      correctAnswer: DataTypes.STRING,
+      incorrectAnswers: DataTypes.JSONB,
     },
     {
       sequelize,

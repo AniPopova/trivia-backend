@@ -3,7 +3,7 @@ const difficultyService = require('../services/difficultyService');
 
 const difficultyRouter = express.Router();
 
-difficultyRouter.get('/all-difficulties-sorted', async (req, res) => {
+difficultyRouter.get('/difficulties', async (req, res) => {
   try {
     const allDifficulties = await difficultyService.getAllDifficulties();
     res.json(allDifficulties);

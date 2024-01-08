@@ -3,7 +3,7 @@ const categoryService = require("../services/categoriesService");
 
 const categoryRouter = express.Router();
 
-categoryRouter.get("/all-categories-sorted", async (req, res) => {
+categoryRouter.get("/categories", async (req, res) => {
   try {
     const allCategories = await categoryService.getAllCategories();
     res.json(allCategories);
