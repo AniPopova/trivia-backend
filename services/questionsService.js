@@ -1,3 +1,4 @@
+'use strict';
 const { Question, Difficulty, Category } = require("../models");
 
 const QuestionService = {

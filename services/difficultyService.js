@@ -1,3 +1,4 @@
+'use strict';
 const { Difficulty } = require('../models');
 
 async function getAllDifficulties() {

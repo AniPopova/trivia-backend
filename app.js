@@ -1,9 +1,10 @@
+'use strict';
 const express = require('express');
 const expressListEndpoints = require('express-list-endpoints'); 
 const { sequelize } = require('./config/sequelize');
 const app = express();
 const PORT = process.env.PORT || 3000;
-const routes = require('./routes'); 
+//const routes = require('./routes'); 
 
 app.use((req, res, next) => {
   console.log('Request:', req.method, req.originalUrl);
@@ -20,6 +21,8 @@ app.use('/questions', questionsRouter);
 app.use('/categories', categoriesRouter);
 app.use('/difficulties', difficultiesRouter);
 
+//app.use(routes);
+
 app.get('/api/endpoints', (req, res) => {
   const endpoints = [
     ...expressListEndpoints(questionsRouter),
@@ -31,7 +34,7 @@ app.get('/api/endpoints', (req, res) => {
 
 sequelize.sync()
   .then(() => {
-    console.log('Database synced successfully.');
+    // Start the server only if syncing with the database.
     app.listen(PORT, () => {
       console.log(`Server is running on http://localhost:${PORT}`);
     });

@@ -1,4 +1,3 @@
-// migrations/xxxxxxxxxxxxxx-create-difficulty.js
 'use strict';
 const { v4: uuidv4 } = require('uuid');
 

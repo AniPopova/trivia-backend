@@ -1,5 +1,4 @@
 const express = require("express");
-const { Category } = require("../models");
 const categoryService = require("../services/categoriesService");
 
 const categoryRouter = express.Router();

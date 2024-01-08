@@ -1,3 +1,4 @@
+'use strict';
 const { Category } = require('../models');
 
 async function getAllCategories() {

@@ -3,9 +3,9 @@
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
 const path = require('path');
-const { Category, Difficulty, Question } = require('../models'); // Adjust the path accordingly
+const { Category, Difficulty, Question } = require('../models'); 
 
-// Load your JSON data
+// JSON data
 const rawData = fs.readFileSync(path.join(__dirname, 'triviaData.json'));
 const questionsData = JSON.parse(rawData);
 
@@ -27,7 +27,6 @@ module.exports = {
       return difficulty ? difficulty.id : null;
     }
 
-    // Inside the seed script
     const questionsWithCategoryAndDifficultyIds = await Promise.all(
       questionsData.results.map(async (question) => {
         const categoryId = await getCategoryIdByName(question.category);

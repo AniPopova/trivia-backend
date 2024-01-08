@@ -1,4 +1,4 @@
-// seeders/categoriesSeed.js
+'use strict';
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
 const path = require('path');
@@ -8,7 +8,6 @@ module.exports = {
     const data = fs.readFileSync(path.join(__dirname, 'categoriesData.json'), 'utf-8');
     const categoriesData = JSON.parse(data);
 
-    // Extract categories array from the data and generate UUIDs for each category
     const categoriesWithUuid = categoriesData.categories.map(category => ({
       id: uuidv4(),
       name: category,
@@ -16,12 +15,12 @@ module.exports = {
       updatedAt: new Date(),
     }));
 
-    // Use Sequelize queryInterface to insert categories into the table
+    // insert categories into the table
     await queryInterface.bulkInsert('Categories', categoriesWithUuid, {});
   },
 
   down: async (queryInterface, Sequelize) => {
-    // Delete all entries from the Categories table on rollback
+    // Delete all entries on rollback
     await queryInterface.bulkDelete('Categories', null, {});
   },
 };

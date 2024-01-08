@@ -1,7 +1,41 @@
-const { Question, Category, Difficulty } = require('../models');
+'use strict';
+const { Question, Category, Difficulty, sequelize } = require('../models');
+
+// const quizService = {
+//   async generateQuiz({ category, difficulty, numQuestions }) {
+//     try {
+//       const questions = await Question.findAll({
+//         where: {},
+//         include: [
+//           { model: Category, as: 'category', where: { name: category } },
+//           { model: Difficulty, as: 'difficulty', where: { name: difficulty } },
+//         ],
+//         order: sequelize.random(), 
+//         limit: numQuestions, 
+//       });
+
+//       const randomizedQuestions = questions.map((question) => {
+//         const answers = [
+//           question.correct_answer,
+//           ...question.incorrect_answers,
+//         ].sort(() => Math.random() - 0.5);
+
+//         return {
+//           ...question.toJSON(),
+//           answers,
+//         };
+//       });
+
+//       return randomizedQuestions;
+//     } catch (error) {
+//       console.error(error);
+//       throw new Error('Error generating quiz');
+//     }
+//   },
+// };
 
 const quizService = {
-  async generateQuiz({ category, difficulty }) {
+  async generateQuiz({ category, difficulty, numQuestions }) {
     try {
       const questions = await Question.findAll({
         where: {},
@@ -9,16 +43,26 @@ const quizService = {
           { model: Category, as: 'category', where: { name: category } },
           { model: Difficulty, as: 'difficulty', where: { name: difficulty } },
         ],
+        limit: numQuestions,
       });
 
       const randomizedQuestions = questions.map((question) => {
-        const answers = [
-          question.correct_answer,
-          ...question.incorrect_answers,
-        ].sort(() => Math.random() - 0.5);
+        const answers = question.incorrect_answers.map((answer) => ({
+          text: answer,
+          isCorrect: false,
+        }));
+       //combine correct and incorrect answers together
+        answers.push({
+          text: question.correct_answer,
+          isCorrect: true,
+        });
+
+        answers.sort(() => Math.random() - 0.5);
 
         return {
-          ...question.toJSON(),
+          category: question.category,
+          difficulty: question.difficulty,
+          question: question.question,
           answers,
         };
       });
@@ -32,3 +76,4 @@ const quizService = {
 };
 
 module.exports = quizService;
+

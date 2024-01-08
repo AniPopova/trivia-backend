@@ -1,5 +1,4 @@
 const express = require('express');
-const { Difficulty } = require('../models');
 const difficultyService = require('../services/difficultyService');
 
 const difficultyRouter = express.Router();

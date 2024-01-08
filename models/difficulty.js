@@ -21,7 +21,10 @@ module.exports = (sequelize) => {
       },
       name: {
         type: DataTypes.STRING,
-        unique: true
+        unique: true,
+        validate: {
+          allowNull: false,
+        }
       }
     },
     {
@@ -31,3 +34,4 @@ module.exports = (sequelize) => {
   );
   return Difficulty;
 };
+

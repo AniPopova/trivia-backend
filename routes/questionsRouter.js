@@ -1,5 +1,4 @@
 const express = require('express');
-const { Question } = require('../models');
 const questionRouter = express.Router();
 const quizService = require('../services/quizService');
 const QuestionService = require('../services/questionsService'); 
@@ -7,14 +6,14 @@ const questionService = QuestionService;
 
 questionRouter.get('/quiz', async (req, res) => {
   try {
-    const result = await quizService.generateQuiz(req.query);
+    const { category, difficulty, numQuestions } = req.query;
+    const result = await quizService.generateQuiz({ category, difficulty, numQuestions });
     res.json(result);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
 questionRouter.get('/all-questions', async (req, res) => {
   try {
     const allQuestions = await questionService.getAllQuestions(); 
