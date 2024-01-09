@@ -7,15 +7,15 @@ module.exports = {
       id: {
         allowNull: false,
         primaryKey: true,
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.fn('gen_random_uuid'),
       },
       type: {
         type: DataTypes.STRING, 
         allowNull: false,
       },
       difficultyId: {
-        type: DataTypes.UUID, 
+        type: Sequelize.UUID, 
         allowNull: false,
         references: {
           model: 'Difficulties',
@@ -23,7 +23,7 @@ module.exports = {
         },
       },   
       categoryId: {
-        type: DataTypes.UUID, 
+        type: Sequelize.UUID,
         allowNull: false,
         references: {
           model: 'Categories',

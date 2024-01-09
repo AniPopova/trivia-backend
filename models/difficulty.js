@@ -15,8 +15,8 @@ module.exports = (sequelize) => {
   Difficulty.init(
     {
       id: {
-        type: DataTypes.UUIDV4,
-        defaultValue: Sequelize.literal('gen_random_uuid()'),
+        type: Sequelize.UUIDV4,
+        defaultValue: Sequelize.fn('gen_random_uuid'),
         primaryKey: true,
         allowNull: false,
       },

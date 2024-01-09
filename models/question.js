@@ -13,14 +13,14 @@ module.exports = (sequelize) => {
   Question.init(
     {
       id: {
-        type: DataTypes.UUIDV4,
-        defaultValue: Sequelize.literal('gen_random_uuid()'),
+        type: Sequelize.UUIDV4,
+        defaultValue: Sequelize.fn('gen_random_uuid'),
         primaryKey: true,
         allowNull: false,
       },
       type: DataTypes.STRING,
-      difficultyId: DataTypes.UUID,
-      categoryId: DataTypes.UUID,
+      difficultyId: Sequelize.UUIDV4,
+      categoryId: Sequelize.UUIDV4,
       question: DataTypes.STRING,
       correctAnswer: DataTypes.STRING, 
       incorrectAnswers: DataTypes.JSONB, 
